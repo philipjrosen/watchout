@@ -3,19 +3,19 @@ var stage = d3.select('body')
               .attr('width', 800)
               .attr('height', 600);
 
-///Player Setup
+var highScore = 0;
+var currentScore = 0;
+var collisions = 0;
 
+///Player Setup
 var dragstarted = function() {
-  console.log("dragstarted");
 };
 
-//may need to modify event if multiple events?
 var dragged = function() {
   svgPlayer.attr("cx", d3.event.x).attr("cy", d3.event.y);
 };
 
 var dragended = function () {
-  console.log('drag end');
 };
 
 var drag = d3.behavior.drag()
@@ -45,10 +45,37 @@ stage.selectAll('.enemy')
     return (Math.random() * 800);
   });
 
+var isTouching = function(enemy){
+  var x1 = enemy.cx.animVal.value;
+  var y1 = enemy.cy.animVal.value;
+  // test if overlapping player
+  var x2 = d3.select('.player').attr('cx');
+  var y2 = d3.select('.player').attr('cy');
+
+  var deltaX = x2 - x1;
+  var deltaY = y2 - y1;
+
+  var sum = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
+  var distance = Math.sqrt(sum);
+
+  if( distance <= 20){
+    collisions++;
+    currentScore = 0;
+    d3.select('.collisions').text("Collisions: "+collisions);
+  }
+}
+
+var collision = function(){
+  var enemies = stage.selectAll('.enemy')[0];
+  enemies.forEach(function(e){
+    isTouching(e);
+  });
+}
+
 var update = function(){
   stage.selectAll('.enemy')
     .transition()
-    .duration(1000)
+    .duration(2000)
     .attr('cy', function(d, i){
       return (Math.random() * 600);
     })
@@ -57,8 +84,18 @@ var update = function(){
     });
 };
 
+setInterval(function(){
+  collision();
+  currentScore++;
+  d3.select('.current').text("Current score: "+Math.floor(currentScore/10));
+  if(currentScore > highScore){
+    highScore = currentScore;
+    d3.select('.high').text("High score: "+Math.floor(highScore/10));
+  }
+}, 10);
+
 update(enemies);
 
 setInterval(function(){
-  update(enemies);
-},1000);
+  update();
+}, 2000);
