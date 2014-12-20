@@ -3,16 +3,34 @@ var stage = d3.select('body')
               .attr('width', 800)
               .attr('height', 600);
 
-var svgPlayer = stage.append('circle');
+///Player Setup
 
+var dragstarted = function() {
+  console.log("dragstarted");
+};
+
+//may need to modify event if multiple events?
+var dragged = function() {
+  svgPlayer.attr("cx", d3.event.x).attr("cy", d3.event.y);
+};
+
+var dragended = function () {
+  console.log('drag end');
+};
+
+var drag = d3.behavior.drag()
+  .on("dragstart", dragstarted)
+  .on("drag", dragged)
+  .on("dragend", dragended);
+
+var svgPlayer = stage.append('circle')
+    .attr({'class':'player', 'r':10})
+    .attr({'cx': 400, 'cy':300})
+    .call(drag);
+
+//Enemy Setup
 var enemies = d3.range(0,50).map(function(enemy){
   return enemy;
-});
-
-svgPlayer.attr({'class':'player', 'cx': 400, 'cy':300, 'r':10});
-
-svgPlayer.on('click', function(e){
-  console.log('clicked');
 });
 
 stage.selectAll('.enemy')
