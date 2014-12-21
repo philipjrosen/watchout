@@ -8,18 +8,19 @@ Feel free to use it if you like. */
 }
 
 .enemy{
-  fill:black;
+   /*used for selection*/
 }
 
-@keyframes infinite-spinning {
+@-webkit-keyframes spin {
   from {
-    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
   }
 }
 
 .rotate {
-
+  -webkit-animation: spin 2s infinite;
+  -webkit-transform-origin: 50% 50%;
 }

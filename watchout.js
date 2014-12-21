@@ -36,9 +36,8 @@ var enemies = d3.range(0,50).map(function(enemy){
 stage.selectAll('.enemy')
   .data(enemies)
   .enter()
-  // .append('circle')
   .append('image')
-  .attr('class', 'enemy')
+  .attr('class', 'enemy rotate')
   .attr({'height': 50, 'width': 50})
   .attr('xlink:href', 'shuriken.png')
   .attr('y', function(d, i){
