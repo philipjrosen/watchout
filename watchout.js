@@ -36,18 +36,21 @@ var enemies = d3.range(0,50).map(function(enemy){
 stage.selectAll('.enemy')
   .data(enemies)
   .enter()
-  .append('circle')
-  .attr({'class':'enemy', 'r':10})
-  .attr('cy', function(d, i){
+  // .append('circle')
+  .append('image')
+  .attr('class', 'enemy')
+  .attr({'height': 50, 'width': 50})
+  .attr('xlink:href', 'shuriken.png')
+  .attr('y', function(d, i){
     return (Math.random() * 600);
   })
-  .attr('cx', function(d, i){
+  .attr('x', function(d, i){
     return (Math.random() * 800);
   });
 
 var isTouching = function(enemy){
-  var x1 = enemy.cx.animVal.value;
-  var y1 = enemy.cy.animVal.value;
+  var x1 = enemy.x.animVal.value;
+  var y1 = enemy.y.animVal.value;
   // test if overlapping player
   var x2 = d3.select('.player').attr('cx');
   var y2 = d3.select('.player').attr('cy');
@@ -76,10 +79,10 @@ var update = function(){
   stage.selectAll('.enemy')
     .transition()
     .duration(2000)
-    .attr('cy', function(d, i){
+    .attr('y', function(d, i){
       return (Math.random() * 600);
     })
-    .attr('cx', function(d, i){
+    .attr('x', function(d, i){
       return (Math.random() * 800);
     });
 };
